@@ -94,7 +94,7 @@ export class App extends Component {
         <Searchbar submit={handleFormSubmit} />
         {isLoad && (
           <Loader
-            color="#3f51b5"
+             ariaLabel='loading'
           />
         )}
         {images.length > 0 && (
