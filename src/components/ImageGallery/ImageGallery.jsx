@@ -23,7 +23,7 @@ export const ImageGallery = ({ img, modalO, largeUrl }) => {
 ImageGallery.propTypes = {
   img: PropTypes.array,
   modalO: PropTypes.func,
-  largeUrl: PropTypes.string,
+ 
 
 };
 
