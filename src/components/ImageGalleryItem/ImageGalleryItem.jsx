@@ -1,30 +1,20 @@
-import React from "react";
-import PropTypes from "prop-types";
-import s from "./ImageGalleryItem.module.css";
 
-const ImageGalleryItem = ({ src, id, openModal, openLarge, srcLarge }) => {
+import PropTypes from 'prop-types';
+import s from './ImageGalleryItem.module.css';
+
+export const ImageGalleryItem = ({ large, small, alt, onClick }) => {
   return (
-    <li id={id} className={s.ImageGalleryItem}>
-      <img
-        className={s.ImageGalleryItemImage}
-        onClick={() => {
-          openModal();
-          openLarge(srcLarge);
-        }}
-        src={src}
-        alt=""
-      />
+    <li className={s.ImageGalleryItem} onClick={() => onClick(large)}>
+      <img src={small} className={s.ImageGalleryItemImage} alt={alt} />
     </li>
   );
 };
 
 ImageGalleryItem.propTypes = {
-  src: PropTypes.string,
-  srcLarge: PropTypes.string,
-  id: PropTypes.string,
-  openModal: PropTypes.func.isRequired,
-  openLarge: PropTypes.func.isRequired,
-
+  large: PropTypes.string.isRequired,
+  small: PropTypes.string.isRequired,
+  alt: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
-export default ImageGalleryItem;
+

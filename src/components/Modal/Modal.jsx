@@ -1,22 +1,69 @@
-import React from "react";
-import s from "./Modal.module.css";
+import { Component } from 'react';
+import { createPortal } from 'react-dom';
+import PropTypes from 'prop-types';
+import s from './Modal.module.css';
 
-export class Modal extends React.Component {
+const modalRoot = document.querySelector('#modal-root');
+
+export class Modal extends Component {
   componentDidMount() {
-    window.addEventListener("keydown", this.props.handleEscape);
+    window.addEventListener('keydown', this.handelKeydown);
   }
   componentWillUnmount() {
-    window.removeEventListener("keydown", this.props.handleEscape);
+    window.removeEventListener('keydown', this.handelKeydown);
   }
 
+  handelKeydown = e => {
+    if (e.code === 'Escape') {
+      this.props.onClose();
+    }
+  };
+
+  handelBackdropClick = e => {
+    if (e.currentTarget === e.target) {
+      this.props.onClose();
+    }
+  };
+
   render() {
-    const { src } = this.props;
-    return (
-      <div className={s.Overlay} onClick={this.props.backDrop}>
-        <div className={s.Modal}>
-          <img src={src} alt="" />
+    const { imgLarge, alt } = this.props;
+    return createPortal(
+      <div className={s.overlay} onClick={this.handelBackdropClick}>
+        <div className={s.modal}>
+          <img src={imgLarge} alt={alt} />
         </div>
-      </div>
+      </div>,
+      modalRoot
     );
   }
 }
+
+Modal.propTypes = {
+  imgLarge: PropTypes.string.isRequired,
+  alt: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
+
+
+// import React from "react";
+// import s from "./Modal.module.css";
+
+// export class Modal extends React.Component {
+//   componentDidMount() {
+//     window.addEventListener("keydown", this.props.handleEscape);
+//   }
+//   componentWillUnmount() {
+//     window.removeEventListener("keydown", this.props.handleEscape);
+//   }
+
+//   render() {
+//     const { src } = this.props;
+//     return (
+//       <div className={s.Overlay} onClick={this.props.backDrop}>
+//         <div className={s.Modal}>
+//           <img src={src} alt="" />
+//         </div>
+//       </div>
+//     );
+//   }
+// }
