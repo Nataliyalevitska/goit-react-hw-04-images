@@ -7,7 +7,7 @@ import { fetchImgWithQuery } from 'API/api';
 import { Component } from 'react';
 import { ImageGallery } from '../ImageGallery/ImageGallery';
 import { SearchBar } from '../SearchBar/SearchBar';
-import { Button } from '../Button/Button';
+import { Button }  from '../Button/Button';
 import { Modal } from '../Modal/Modal';
 import { Loader } from '../Loader/Loader';
 import { imgMapper } from 'utils/imgMapper';
