@@ -58,6 +58,7 @@ export class SearchBar extends Component {
 SearchBar.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 };
+export default SearchBar;
 
 // import { Component } from "react";
 // import s from "./Searchbar.module.css";

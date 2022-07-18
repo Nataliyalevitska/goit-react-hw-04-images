@@ -6,7 +6,7 @@ import { fetchImgWithQuery } from 'API/api';
 
 import { Component } from 'react';
 import { ImageGallery } from '../ImageGallery/ImageGallery';
-import { SearchBar } from '../SearchBar/SearchBar';
+import { SearchBar } from '../SearchBar/Searchbar';
 import { Button } from '../Button/Button';
 import { Modal } from '../Modal/Modal';
 import { Loader } from '../Loader/Loader';
