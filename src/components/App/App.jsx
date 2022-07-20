@@ -1,10 +1,10 @@
+
+import { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { fetchImgWithQuery } from 'API/api';
-
-import { Component } from 'react';
 import { ImageGallery } from '../ImageGallery/ImageGallery';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { Button }  from '../Button/Button';
@@ -14,95 +14,69 @@ import { imgMapper } from 'utils/imgMapper';
 
 import s from './App.module.css';
 
-export class App extends Component {
-  state = {
-    query: '',
-    page: 1,
-    images: [],
-    largeImg: null,
-    isLoading: false,
-  };
-
-  async componentDidUpdate(_, prevState) {
-    const { query, page } = this.state;
-    const prevPage = prevState.page;
-    const nextPage = this.state.page;
-    const prevQuery = prevState.query;
-    const nextQuery = this.state.query;
-
-    if (prevQuery !== nextQuery) {
-      try {
-        this.setState({ isLoading: true, page: 1, images: [] });
-        const images = await fetchImgWithQuery(query);
-        this.setState({
-          images: imgMapper(images),
-        });
-      } catch {
-        return toast.error("Sorry, we didn't find anything");
-      } finally {
-        this.setState({ isLoading: false });
-      }
+export const App = () => {
+  const [query, setQuery] = useState('');
+  const [page, setPage] = useState(1);
+  const [images, setImages] = useState([]);
+  const [largeImg, setLargeImg] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+ 
+  useEffect(() => {
+    if (query.trim() === '') {
+      return;
     }
-    if (prevPage !== nextPage && nextPage !== 1) {
+    async function getImeges() {
       try {
-        this.setState({ isLoading: true });
+        setIsLoading(true);
         const newImages = await fetchImgWithQuery(query, page);
-        this.setState(prevState => ({
-          images: [...prevState.images, ...imgMapper(newImages)],
-        }));
+        setImages(prevImg => [...prevImg, ...imgMapper(newImages)]);
       } catch {
         return toast.error("Sorry, we didn't find anything");
       } finally {
-        this.setState({ isLoading: false });
+        setIsLoading(false);
       }
     }
-  }
+    getImeges();
+  }, [query, page]);
 
-  formSubmitHandler = query => {
-    this.setState({ query });
+  const OnChangeQuery = query => {
+    setQuery(query);
+    setPage(1);
+    setImages([]);
   };
 
-  loadMore = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-    }));
+  const loadMore = () => {
+    setPage(page + 1);
   };
 
-  handleImgClick = largeImg => {
-    this.setState({ largeImg });
+  const handleImgClick = largeImg => {
+    setLargeImg(largeImg);
   };
 
-  handleModalClose() {
-    this.setState({ largeImg: null });
-  }
+  return (
+    <div className={s.app}>
+      <SearchBar onSubmit={OnChangeQuery} />
+      <ToastContainer autoClose={3000} />
 
-  render() {
-    const { query, images, largeImg, isLoading } = this.state;
+      {isLoading && <Loader />}
 
-    return (
-      <div className={s.app}>
-        <SearchBar onSubmit={this.formSubmitHandler} />
-        <ToastContainer autoClose={3000} />
+      {images.length > 0 && (
+        <ImageGallery
+          images={images}
+          onClick={handleImgClick}
+        />
+      )}
 
-        {isLoading && <Loader />}
+      {images.length > 0 && !isLoading && <Button onClick={loadMore} />}
 
-        {images.length > 0 && (
-          <ImageGallery
-            images={this.state.images}
-            onClick={this.handleImgClick}
-          />
-        )}
+      {largeImg && (
+        <Modal
+          imgLarge={largeImg}
+          alt={query}
+          onClose={handleImgClick}
+        />
+      )}
+    </div>
+  );
+};
 
-        {images.length > 0 && !isLoading && <Button onClick={this.loadMore} />}
-
-        {largeImg && (
-          <Modal
-            imgLarge={largeImg}
-            alt={query}
-            onClose={this.handleImgClick}
-          />
-        )}
-      </div>
-    );
-  }
-}
