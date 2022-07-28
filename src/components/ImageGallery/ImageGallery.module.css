@@ -28,3 +28,10 @@
     transform: scale(1.03);
     cursor: zoom-in;
 }
+.lightTheme {
+    background-color: #dfdfdf;
+}
+
+.darkTheme {
+    background-color: #444;
+}

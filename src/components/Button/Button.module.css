@@ -28,3 +28,10 @@
 .loadMore:focus {
     background-color: #303f9f;
 }
+.lightTheme {
+    background-color: #dfdfdf;
+}
+
+.darkTheme {
+    background-color: #444;
+}

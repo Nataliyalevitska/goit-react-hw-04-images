@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react';
+import { ThemeContext, themes } from '../../utils/context/themeContext'
 import { ToastContainer } from 'react-toastify';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,6 +21,13 @@ export const App = () => {
   const [images, setImages] = useState([]);
   const [largeImg, setLargeImg] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [theme,setTheme] = useState(themes.light);
+
+  const toggleTheme = () =>
+    setTheme(prevTheme =>
+      prevTheme === themes.light ? themes.dark : themes.light,
+    );
  
   useEffect(() => {
     if (query.trim() === '') {
@@ -55,6 +63,7 @@ export const App = () => {
 
   return (
     <div className={s.app}>
+      <ThemeContext.Provider value={{ theme, toggleTheme }}>    
       <SearchBar onSubmit={OnChangeQuery} />
       <ToastContainer autoClose={3000} />
 
@@ -76,6 +85,7 @@ export const App = () => {
           onClose={handleImgClick}
         />
       )}
+      </ThemeContext.Provider>
     </div>
   );
 };

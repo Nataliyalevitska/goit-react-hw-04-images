@@ -73,3 +73,9 @@
     font: inherit;
     font-size: 18px;
 }
+.lightTheme{
+    background-color: #dfdfdf;
+}
+.darkTheme{
+    background-color: #444;
+}
