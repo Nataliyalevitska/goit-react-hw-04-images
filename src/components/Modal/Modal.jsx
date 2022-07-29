@@ -1,12 +1,14 @@
 import {useCallback, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { useLockBodyScroll } from 'react-use';
 import PropTypes from 'prop-types';
 import s from './Modal.module.css';
 
 const modalRoot = document.querySelector('#modal-root');
 
 export const Modal = ({ imgLarge, alt, onClose }) => {
-
+  useLockBodyScroll(true);
+  
   const handelKeydown = useCallback(e => {
     if (e.code === 'Escape') {
       onClose();
@@ -26,6 +28,7 @@ export const Modal = ({ imgLarge, alt, onClose }) => {
     };
 
   }, [handelKeydown]);
+
 
   return createPortal(
     <div className={s.overlay} onClick={handelBackdropClick}>
